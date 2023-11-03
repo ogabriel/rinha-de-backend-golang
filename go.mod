@@ -2,7 +2,10 @@ module github.com/ogabriel/rinha-de-backend-golang
 
 go 1.21.1
 
-require github.com/gin-gonic/gin v1.9.1
+require (
+	github.com/gin-gonic/gin v1.9.1
+	github.com/google/uuid v1.4.0
+)
 
 require (
 	github.com/bytedance/sonic v1.9.1 // indirect
