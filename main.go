@@ -1,8 +1,13 @@
 package main
 
 import (
+	"context"
+	"log"
+
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 type Pessoa struct {
@@ -22,6 +27,19 @@ func main() {
 	router.GET("/contagem-pessoas", contagemPessoas)
 
 	router.Run("localhost:9999")
+}
+
+func pool() {
+	connString := "postgres://postgres:postgres@127.0.0.1:5432/rinha&pool_max_conns=100"
+	dbpool, err := pgxpool.New(context.Background(), connString)
+
+	defer dbpool.Close()
+
+	log.SetPrefix("database: ")
+
+	if err != nil {
+		log.Panic("could not connect to database %v", err)
+	}
 }
 
 func postPessoas(c *gin.Context) {
