@@ -40,17 +40,49 @@ func main() {
 	router.Run("localhost:9999")
 }
 
-func pool() {
-	connString := "postgres://postgres:postgres@127.0.0.1:5432/rinha&pool_max_conns=100"
-	dbpool, err := pgxpool.New(context.Background(), connString)
+func postPessoas(c *gin.Context) {
+	var person Pessoa
 
-	defer dbpool.Close()
+	if err := c.BindJSON(&person); err != nil {
+		c.String(http.StatusBadRequest, "")
+		return
+	}
 
-	log.SetPrefix("database: ")
+	if invalidStack(person.Stack) {
+		c.String(http.StatusBadRequest, "")
+		return
+	}
+
+	if _, err := time.Parse("2006-01-02", person.Nascimento); err != nil {
+		c.String(http.StatusBadRequest, "")
+		return
+	}
+
+	uuid, err := uuid.NewRandom()
 
 	if err != nil {
-		log.Panic("could not connect to database %v", err)
+		c.String(http.StatusUnprocessableEntity, "")
+		return
 	}
+
+	_, err = pool.Exec(
+		context.Background(),
+		"INSERT INTO pessoas (id, apelido, nome, nascimento, stack, busca) VALUES ($1, $2, $3, $4, $5, $6)",
+		uuid,
+		person.Apelido,
+		person.Nome,
+		person.Nascimento,
+		person.Stack,
+		buildBusca(person),
+	)
+
+	if err != nil {
+		c.String(http.StatusUnprocessableEntity, "")
+		return
+	}
+
+	c.Header("Location", "/pessoas/"+uuid.String())
+	c.JSON(http.StatusCreated, person)
 }
 
 func postPessoas(c *gin.Context) {
