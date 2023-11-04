@@ -63,24 +63,24 @@ func postPessoas(c *gin.Context) {
 	var person Pessoa
 
 	if err := c.BindJSON(&person); err != nil {
-		c.String(http.StatusBadRequest, "")
+		c.Status(http.StatusBadRequest)
 		return
 	}
 
 	if invalidStack(person.Stack) {
-		c.String(http.StatusBadRequest, "")
+		c.Status(http.StatusBadRequest)
 		return
 	}
 
 	if _, err := time.Parse("2006-01-02", person.Nascimento); err != nil {
-		c.String(http.StatusBadRequest, "")
+		c.Status(http.StatusBadRequest)
 		return
 	}
 
 	uuid, err := uuid.NewRandom()
 
 	if err != nil {
-		c.String(http.StatusUnprocessableEntity, "")
+		c.Status(http.StatusUnprocessableEntity)
 		return
 	}
 
@@ -96,12 +96,12 @@ func postPessoas(c *gin.Context) {
 	)
 
 	if err != nil {
-		c.String(http.StatusUnprocessableEntity, "")
+		c.Status(http.StatusUnprocessableEntity)
 		return
 	}
 
 	c.Header("Location", "/pessoas/"+uuid.String())
-	c.JSON(http.StatusCreated, person)
+	c.Status(http.StatusCreated)
 }
 
 func invalidStack(stack []string) bool {
@@ -138,7 +138,7 @@ func getPessoas(c *gin.Context) {
 	var person Pessoa
 
 	if err := pool.QueryRow(context.Background(), "SELECT id, apelido, nome, nascimento, stack FROM pessoas WHERE id = $1", id).Scan(&person.ID, &person.Apelido, &person.Nome, &person.Nascimento, &person.Stack); err != nil {
-		c.String(http.StatusNotFound, err.Error())
+		c.Status(http.StatusNotFound)
 		return
 	}
 
@@ -149,7 +149,7 @@ func indexPessoas(c *gin.Context) {
 	term, passed := c.GetQuery("t")
 
 	if !passed || term == "" {
-		c.String(http.StatusBadRequest, "")
+		c.Status(http.StatusBadRequest)
 		return
 	}
 
@@ -160,7 +160,7 @@ func indexPessoas(c *gin.Context) {
 	defer rows.Close()
 
 	if err != nil {
-		c.String(http.StatusUnprocessableEntity, err.Error())
+		c.Status(http.StatusUnprocessableEntity)
 		return
 	}
 
@@ -170,7 +170,7 @@ func indexPessoas(c *gin.Context) {
 		var person Pessoa
 
 		if err := rows.Scan(&person.ID, &person.Apelido, &person.Nome, &person.Nascimento, &person.Stack); err != nil {
-			c.String(http.StatusUnprocessableEntity, err.Error())
+			c.Status(http.StatusUnprocessableEntity)
 			return
 		}
 
