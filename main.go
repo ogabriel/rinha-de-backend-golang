@@ -11,6 +11,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -164,18 +165,7 @@ func indexPessoas(c *gin.Context) {
 		return
 	}
 
-	var people []Pessoa
-
-	for rows.Next() {
-		var person Pessoa
-
-		if err := rows.Scan(&person.ID, &person.Apelido, &person.Nome, &person.Nascimento, &person.Stack); err != nil {
-			c.Status(http.StatusUnprocessableEntity)
-			return
-		}
-
-		people = append(people, person)
-	}
+	people, err := pgx.CollectRows(rows, pgx.RowToStructByPos[Pessoa])
 
 	c.JSON(http.StatusOK, people)
 }
