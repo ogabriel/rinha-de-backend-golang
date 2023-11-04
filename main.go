@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"unicode"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -108,11 +109,21 @@ func invalidStack(stack []string) bool {
 }
 
 func buildBusca(person Pessoa) string {
-	if person.Stack == nil {
-		return strings.ToLower(person.Apelido + " " + person.Nome)
-	} else {
-		return strings.ToLower(person.Apelido + " " + person.Nome + " " + strings.Join(person.Stack, " "))
+	var busca strings.Builder
+
+	busca.WriteString(strings.Map(unicode.ToLower, person.Apelido))
+	busca.WriteString(" ")
+	busca.WriteString(strings.Map(unicode.ToLower, person.Nome))
+	busca.WriteString(" ")
+
+	if person.Stack != nil {
+		for _, v := range person.Stack {
+			busca.WriteString(strings.Map(unicode.ToLower, v))
+			busca.WriteString(" ")
+		}
 	}
+
+	return busca.String()
 }
 
 func getPessoas(c *gin.Context) {
