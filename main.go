@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -40,7 +41,13 @@ func main() {
 	router.GET("/pessoas", indexPessoas)
 	router.GET("/contagem-pessoas", contagemPessoas)
 
-	router.Run("localhost:9999")
+	port, ok := os.LookupEnv("PORT")
+
+	if !ok {
+		port = "9999"
+	}
+
+	router.Run("localhost:" + port)
 }
 
 func postPessoas(c *gin.Context) {
