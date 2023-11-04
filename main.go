@@ -92,6 +92,15 @@ func invalidStack(stack []string) bool {
 		}
 	}
 
+	return false
+}
+
+func buildBusca(person Pessoa) string {
+	if person.Stack == nil {
+		return strings.ToLower(person.Apelido + " " + person.Nome)
+	} else {
+		return strings.ToLower(person.Apelido + " " + person.Nome + " " + strings.Join(person.Stack, " "))
+	}
 }
 
 func getPessoas(c *gin.Context) {
