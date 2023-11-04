@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"log"
 	"net/http"
 	"os"
 	"strconv"
@@ -26,13 +25,20 @@ type Pessoa struct {
 var pool *pgxpool.Pool
 
 func main() {
-	connString := "postgres://postgres:postgres@127.0.0.1:5432/rinha"
+	connString := "postgres://postgres:postgres@127.0.0.1:5432/rinha?sslmode=disable&pool_min_conns=1&pool_max_conns=15"
 
-	var err error
-	pool, err = pgxpool.New(context.Background(), connString)
+	config, err := pgxpool.ParseConfig(connString)
 
 	if err != nil {
-		log.Panic("could not connect to database", err)
+		panic(err)
+	}
+
+	pool, err = pgxpool.NewWithConfig(context.Background(), config)
+
+	defer pool.Close()
+
+	if err != nil {
+		panic(err)
 	}
 
 	// router := gin.Default()
