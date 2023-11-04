@@ -59,28 +59,28 @@ func main() {
 }
 
 func postPessoas(pool *pgxpool.Pool) gin.HandlerFunc {
-	return func(c *gin.Context) {
+	return func(ctx *gin.Context) {
 		var person Pessoa
 
-		if err := c.BindJSON(&person); err != nil {
-			c.Status(http.StatusBadRequest)
+		if err := ctx.BindJSON(&person); err != nil {
+			ctx.Status(http.StatusBadRequest)
 			return
 		}
 
 		if invalidStack(person.Stack) {
-			c.Status(http.StatusBadRequest)
+			ctx.Status(http.StatusBadRequest)
 			return
 		}
 
 		if _, err := time.Parse("2006-01-02", person.Nascimento); err != nil {
-			c.Status(http.StatusBadRequest)
+			ctx.Status(http.StatusBadRequest)
 			return
 		}
 
 		uuid, err := uuid.NewRandom()
 
 		if err != nil {
-			c.Status(http.StatusUnprocessableEntity)
+			ctx.Status(http.StatusUnprocessableEntity)
 			return
 		}
 
@@ -96,12 +96,12 @@ func postPessoas(pool *pgxpool.Pool) gin.HandlerFunc {
 		)
 
 		if err != nil {
-			c.Status(http.StatusUnprocessableEntity)
+			ctx.Status(http.StatusUnprocessableEntity)
 			return
 		}
 
-		c.Header("Location", "/pessoas/"+uuid.String())
-		c.Status(http.StatusCreated)
+		ctx.Header("Location", "/pessoas/"+uuid.String())
+		ctx.Status(http.StatusCreated)
 	}
 }
 
@@ -134,27 +134,27 @@ func buildBusca(person Pessoa) string {
 }
 
 func getPessoas(pool *pgxpool.Pool) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		id := c.Param("id")
+	return func(ctx *gin.Context) {
+		id := ctx.Param("id")
 
 		var person Pessoa
 
 		if err := pool.QueryRow(context.Background(), "SELECT id, apelido, nome, nascimento, stack FROM pessoas WHERE id = $1", id).Scan(&person.ID, &person.Apelido, &person.Nome, &person.Nascimento, &person.Stack); err != nil {
-			c.Status(http.StatusNotFound)
+			ctx.Status(http.StatusNotFound)
 			return
 		}
 
-		c.JSON(http.StatusOK, person)
+		ctx.JSON(http.StatusOK, person)
 
 	}
 }
 
 func indexPessoas(pool *pgxpool.Pool) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		term, passed := c.GetQuery("t")
+	return func(ctx *gin.Context) {
+		term, passed := ctx.GetQuery("t")
 
 		if !passed || term == "" {
-			c.Status(http.StatusBadRequest)
+			ctx.Status(http.StatusBadRequest)
 			return
 		}
 
@@ -163,21 +163,21 @@ func indexPessoas(pool *pgxpool.Pool) gin.HandlerFunc {
 		rows, err := pool.Query(context.Background(), "SELECT id, apelido, nome, nascimento, stack FROM pessoas WHERE busca LIKE '%' || $1 || '%' LIMIT 50", term)
 
 		if err != nil {
-			c.Status(http.StatusUnprocessableEntity)
+			ctx.Status(http.StatusUnprocessableEntity)
 			return
 		}
 
 		people, err := pgx.CollectRows(rows, pgx.RowToStructByPos[Pessoa])
 
-		c.JSON(http.StatusOK, people)
+		ctx.JSON(http.StatusOK, people)
 	}
 }
 
 func contagemPessoas(pool *pgxpool.Pool) gin.HandlerFunc {
-	return func(c *gin.Context) {
+	return func(ctx *gin.Context) {
 		var count int
 		_ = pool.QueryRow(context.Background(), "SELECT COUNT(*) FROM pessoas").Scan(&count)
 
-		c.String(http.StatusOK, strconv.Itoa(count))
+		ctx.String(http.StatusOK, strconv.Itoa(count))
 	}
 }
