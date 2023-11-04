@@ -34,7 +34,9 @@ func main() {
 		log.Panic("could not connect to database", err)
 	}
 
-	router := gin.Default()
+	// router := gin.Default()
+	router := gin.New()
+	router.Use(gin.Recovery())
 
 	router.POST("/pessoas", postPessoas)
 	router.GET("/pessoas/:id", getPessoas)
