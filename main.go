@@ -158,8 +158,6 @@ func indexPessoas(c *gin.Context) {
 
 	rows, err := pool.Query(context.Background(), "SELECT id, apelido, nome, nascimento, stack FROM pessoas WHERE busca LIKE '%' || $1 || '%' LIMIT 50", term)
 
-	defer rows.Close()
-
 	if err != nil {
 		c.Status(http.StatusUnprocessableEntity)
 		return
