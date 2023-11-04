@@ -12,9 +12,9 @@ import (
 
 type Pessoa struct {
 	ID         uuid.UUID `json:"id"`
-	Apelido    string    `json:"apelido"`
-	Nome       string    `json:"nome"`
-	Nascimento string    `json:"nascimento"`
+	Apelido    string    `json:"apelido" binding:"required,max=32"`
+	Nome       string    `json:"nome" binding:"required,max=100"`
+	Nascimento string    `json:"nascimento" binding:"required,len=10"`
 	Stack      []string  `json:"stack"`
 }
 
