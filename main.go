@@ -18,7 +18,18 @@ type Pessoa struct {
 	Stack      []string  `json:"stack"`
 }
 
+var pool *pgxpool.Pool
+
 func main() {
+	connString := "postgres://postgres:postgres@127.0.0.1:5432/rinha"
+
+	var err error
+	pool, err = pgxpool.New(context.Background(), connString)
+
+	if err != nil {
+		log.Panic("could not connect to database", err)
+	}
+
 	router := gin.Default()
 
 	router.POST("/pessoas", postPessoas)
