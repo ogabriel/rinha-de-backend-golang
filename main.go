@@ -152,5 +152,8 @@ func indexPessoas(c *gin.Context) {
 }
 
 func contagemPessoas(c *gin.Context) {
+	var count int
+	_ = pool.QueryRow(context.Background(), "SELECT COUNT(*) FROM pessoas").Scan(&count)
 
+	c.String(http.StatusOK, strconv.Itoa(count))
 }
