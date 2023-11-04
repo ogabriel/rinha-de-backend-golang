@@ -85,7 +85,12 @@ func postPessoas(c *gin.Context) {
 	c.JSON(http.StatusCreated, person)
 }
 
-func postPessoas(c *gin.Context) {
+func invalidStack(stack []string) bool {
+	for _, v := range stack {
+		if v == "" || len(v) > 32 {
+			return true
+		}
+	}
 
 }
 
