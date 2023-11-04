@@ -117,7 +117,38 @@ func getPessoas(c *gin.Context) {
 }
 
 func indexPessoas(c *gin.Context) {
+	term, passed := c.GetQuery("t")
 
+	if !passed || term == "" {
+		c.String(http.StatusBadRequest, "")
+		return
+	}
+
+	term = strings.ToLower(term)
+
+	rows, err := pool.Query(context.Background(), "SELECT id, apelido, nome, nascimento, stack FROM pessoas WHERE busca LIKE '%' || $1 || '%' LIMIT 50", term)
+
+	defer rows.Close()
+
+	if err != nil {
+		c.String(http.StatusUnprocessableEntity, err.Error())
+		return
+	}
+
+	var people []Pessoa
+
+	for rows.Next() {
+		var person Pessoa
+
+		if err := rows.Scan(&person.ID, &person.Apelido, &person.Nome, &person.Nascimento, &person.Stack); err != nil {
+			c.String(http.StatusUnprocessableEntity, err.Error())
+			return
+		}
+
+		people = append(people, person)
+	}
+
+	c.JSON(http.StatusOK, people)
 }
 
 func contagemPessoas(c *gin.Context) {
