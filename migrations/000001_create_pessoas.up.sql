@@ -4,5 +4,5 @@ CREATE TABLE IF NOT EXISTS pessoas (
     nome character varying(100),
     nascimento character varying(10),
     stack character varying(32)[],
-    busca text,
+    busca text
 );
