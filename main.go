@@ -104,7 +104,16 @@ func buildBusca(person Pessoa) string {
 }
 
 func getPessoas(c *gin.Context) {
+	id := c.Param("id")
 
+	var person Pessoa
+
+	if err := pool.QueryRow(context.Background(), "SELECT id, apelido, nome, nascimento, stack FROM pessoas WHERE id = $1", id).Scan(&person.ID, &person.Apelido, &person.Nome, &person.Nascimento, &person.Stack); err != nil {
+		c.String(http.StatusNotFound, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, person)
 }
 
 func indexPessoas(c *gin.Context) {
