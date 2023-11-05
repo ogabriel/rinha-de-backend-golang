@@ -105,7 +105,7 @@ func missingFields(person *Pessoa) bool {
 }
 
 func invalidFields(person *Pessoa) bool {
-	if len(person.Apelido) > 32 && len(person.Nome) > 100 {
+	if len(person.Apelido) > 32 || len(person.Nome) > 100 {
 		return true
 	}
 
