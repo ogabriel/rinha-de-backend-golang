@@ -168,7 +168,7 @@ func indexPessoas(pool *pgxpool.Pool) gin.HandlerFunc {
 			return
 		}
 
-		term = strings.ToLower(term)
+		term = strings.Map(unicode.ToLower, term)
 
 		rows, err := pool.Query(ctx, "SELECT id, apelido, nome, nascimento, stack FROM pessoas WHERE busca LIKE '%' || $1 || '%' LIMIT 50", term)
 
