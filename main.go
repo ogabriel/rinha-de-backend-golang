@@ -48,7 +48,10 @@ func main() {
 
 	defer pool.Close()
 
-	// router := gin.Default()
+	if err := pool.Ping(context.Background()); err != nil {
+		panic(err)
+	}
+
 	router := gin.New()
 	router.Use(gin.Recovery())
 
