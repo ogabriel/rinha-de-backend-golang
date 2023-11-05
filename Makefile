@@ -12,12 +12,14 @@ run-release:
 	GIN_MODE=release go run .
 
 database-reset:
-	make database-drop
-	make database-setup
-
-database-setup:
+	make database-drop || exit 0
 	make database-create
 	make database-migration-up
+
+database-reset-release:
+	make database-drop || exit 0
+	make database-create
+	/app/migrate -path migrations/ -database $(DATABASE_URL)/$(DATABASE_NAME)?sslmode=disable -verbose up
 
 database-create:
 	psql $(DATABASE_URL) -c "CREATE DATABASE $(DATABASE_NAME)"
