@@ -5,6 +5,12 @@ endif
 PROJECT=$(shell basename $(PWD))
 DATABASE_URL=postgres://$(DATABASE_USER):$(DATABASE_PASS)@$(DATABASE_HOST):$(DATABASE_PORT)
 
+run:
+	go run .
+
+run-release:
+	GIN_MODE=release go run .
+
 database-reset:
 	make database-drop
 	make database-setup
