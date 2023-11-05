@@ -85,7 +85,7 @@ func postPessoas(pool *pgxpool.Pool) gin.HandlerFunc {
 		}
 
 		_, err = pool.Exec(
-			context.Background(),
+			ctx,
 			"INSERT INTO pessoas (id, apelido, nome, nascimento, stack, busca) VALUES ($1, $2, $3, $4, $5, $6)",
 			uuid,
 			person.Apelido,
@@ -139,7 +139,7 @@ func getPessoas(pool *pgxpool.Pool) gin.HandlerFunc {
 
 		var person Pessoa
 
-		if err := pool.QueryRow(context.Background(), "SELECT id, apelido, nome, nascimento, stack FROM pessoas WHERE id = $1", id).Scan(&person.ID, &person.Apelido, &person.Nome, &person.Nascimento, &person.Stack); err != nil {
+		if err := pool.QueryRow(ctx, "SELECT id, apelido, nome, nascimento, stack FROM pessoas WHERE id = $1", id).Scan(&person.ID, &person.Apelido, &person.Nome, &person.Nascimento, &person.Stack); err != nil {
 			ctx.Status(http.StatusNotFound)
 			return
 		}
@@ -160,7 +160,7 @@ func indexPessoas(pool *pgxpool.Pool) gin.HandlerFunc {
 
 		term = strings.ToLower(term)
 
-		rows, err := pool.Query(context.Background(), "SELECT id, apelido, nome, nascimento, stack FROM pessoas WHERE busca LIKE '%' || $1 || '%' LIMIT 50", term)
+		rows, err := pool.Query(ctx, "SELECT id, apelido, nome, nascimento, stack FROM pessoas WHERE busca LIKE '%' || $1 || '%' LIMIT 50", term)
 
 		if err != nil {
 			ctx.Status(http.StatusUnprocessableEntity)
@@ -176,7 +176,7 @@ func indexPessoas(pool *pgxpool.Pool) gin.HandlerFunc {
 func contagemPessoas(pool *pgxpool.Pool) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var count int
-		_ = pool.QueryRow(context.Background(), "SELECT COUNT(*) FROM pessoas").Scan(&count)
+		_ = pool.QueryRow(ctx, "SELECT COUNT(*) FROM pessoas").Scan(&count)
 
 		ctx.String(http.StatusOK, strconv.Itoa(count))
 	}
