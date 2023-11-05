@@ -7,13 +7,17 @@ services:
       dockerfile: Dockerfile
       target: release
     environment: &env_app1
-      PORT: 9997
+      DATABASE_HOST: localhost
+      DATABASE_USER: postgres
+      DATABASE_PASS: postgres
+      DATABASE_PORT: 5432
       DATABASE_NAME: rinha
-      DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432
+      DATABASE_POOL: 15
+      PORT: 9997
       GIN_MODE: release
-      # GOGC: 100
-      # GOMEMLIMIT: 450MiB
-      # GOMAXPROCS: 1
+      GOGC: off
+      GOMEMLIMIT: 450MiB
+      GOMAXPROCS: 1
     network_mode: host
     depends_on:
       postgres:
@@ -22,7 +26,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.35'
+          cpus: '0.3'
           memory: '0.5GB'
 
   app2:
@@ -32,7 +36,6 @@ services:
     environment:
       <<: *env_app1
       PORT: 9998
-      RELEASE_NODE: app2@127.0.0.1
     command: ["release"]
 
   nginx:
@@ -71,5 +74,5 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.6'
+          cpus: '0.7'
           memory: '1.5GB'
