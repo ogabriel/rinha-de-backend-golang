@@ -67,7 +67,7 @@ func postPessoas(pool *pgxpool.Pool) gin.HandlerFunc {
 			return
 		}
 
-		if invalidStack(person.Stack) {
+		if invalidStack(&person.Stack) {
 			ctx.Status(http.StatusBadRequest)
 			return
 		}
@@ -105,8 +105,8 @@ func postPessoas(pool *pgxpool.Pool) gin.HandlerFunc {
 	}
 }
 
-func invalidStack(stack []string) bool {
-	for _, v := range stack {
+func invalidStack(stack *[]string) bool {
+	for _, v := range *stack {
 		if v == "" || len(v) > 32 {
 			return true
 		}
