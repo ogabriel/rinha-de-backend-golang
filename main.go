@@ -140,7 +140,7 @@ func invalidFields(person *Pessoa) bool {
 }
 
 func buildBusca(apelido string, nome string, stack *[]string) string {
-	size := len(apelido) + len(nome) + 2 + (len(*stack) * 33)
+	size := len(apelido) + len(nome) + 2 + (32 + ((len(*stack) - 1) * 33))
 
 	var busca strings.Builder
 	busca.Grow(size)
