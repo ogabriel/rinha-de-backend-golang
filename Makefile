@@ -1,5 +1,6 @@
 ifneq (,$(wildcard ./.env))
     include .env
+	export
 endif
 
 PROJECT=$(shell basename $(PWD))
