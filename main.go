@@ -116,7 +116,7 @@ func invalidStack(stack *[]string) bool {
 }
 
 func buildBusca(apelido string, nome string, stack *[]string) string {
-	size := 32 + 100 + (len(*stack) * 32)
+	size := len(apelido) + len(nome) + 2 + (len(*stack) * 33)
 
 	var busca strings.Builder
 	busca.Grow(size)
