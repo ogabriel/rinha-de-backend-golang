@@ -3,6 +3,7 @@ ifneq (,$(wildcard ./.env))
 endif
 
 PROJECT=$(shell basename $(PWD))
+DATABASE_URL=postgres://$(DATABASE_USER):$(DATABASE_PASS)@$(DATABASE_HOST):$(DATABASE_PORT)
 
 database-reset:
 	make database-drop
