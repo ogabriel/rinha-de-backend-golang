@@ -15,11 +15,11 @@ import (
 )
 
 type Pessoa struct {
-	ID         uuid.UUID `json:"id"`
-	Apelido    string    `json:"apelido" binding:"required,max=32"`
-	Nome       string    `json:"nome" binding:"required,max=100"`
-	Nascimento string    `json:"nascimento" binding:"required,len=10"`
-	Stack      []string  `json:"stack"`
+	ID         string   `json:"id"`
+	Apelido    string   `json:"apelido"`
+	Nome       string   `json:"nome"`
+	Nascimento string   `json:"nascimento"`
+	Stack      []string `json:"stack"`
 }
 
 func main() {
@@ -66,12 +66,12 @@ func postPessoas(pool *pgxpool.Pool) gin.HandlerFunc {
 			return
 		}
 
-		if invalidStack(&person.Stack) {
-			ctx.Status(http.StatusBadRequest)
+		if missingFields(&person) {
+			ctx.Status(http.StatusUnprocessableEntity)
 			return
 		}
 
-		if _, err := time.Parse("2006-01-02", person.Nascimento); err != nil {
+		if invalidFields(&person) {
 			ctx.Status(http.StatusBadRequest)
 			return
 		}
@@ -96,8 +96,24 @@ func postPessoas(pool *pgxpool.Pool) gin.HandlerFunc {
 	}
 }
 
-func invalidStack(stack *[]string) bool {
-	for _, v := range *stack {
+func missingFields(person *Pessoa) bool {
+	if len(person.Apelido) == 0 || len(person.Nome) == 0 || len(person.Nascimento) == 0 {
+		return true
+	}
+
+	return false
+}
+
+func invalidFields(person *Pessoa) bool {
+	if len(person.Apelido) > 32 && len(person.Nome) > 100 {
+		return true
+	}
+
+	if _, err := time.Parse("2006-01-02", person.Nascimento); err != nil {
+		return true
+	}
+
+	for _, v := range person.Stack {
 		if v == "" || len(v) > 32 {
 			return true
 		}
