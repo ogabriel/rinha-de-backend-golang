@@ -23,7 +23,7 @@ type Pessoa struct {
 }
 
 func main() {
-	connString := "postgres://postgres:postgres@127.0.0.1:5432/rinha?sslmode=disable&pool_min_conns=1&pool_max_conns=15"
+	connString := "postgres://postgres:postgres@127.0.0.1:5432/rinha?sslmode=disable&pool_min_conns=15&pool_max_conns=15"
 
 	config, err := pgxpool.ParseConfig(connString)
 
