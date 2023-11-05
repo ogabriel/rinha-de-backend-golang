@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"os"
 	"strconv"
@@ -23,7 +24,15 @@ type Pessoa struct {
 }
 
 func main() {
-	connString := "postgres://postgres:postgres@127.0.0.1:5432/rinha?sslmode=disable&pool_min_conns=15&pool_max_conns=15"
+	connString := fmt.Sprintf(
+		"postgres://%s:%s@%s:%s/%s?sslmode=disable&pool_min_conns=%s&pool_max_conns=%[6]s",
+		getEnv("DATABASE_USER"),
+		getEnv("DATABASE_PASS"),
+		getEnv("DATABASE_HOST"),
+		getEnv("DATABASE_PORT"),
+		getEnv("DATABASE_NAME"),
+		getEnv("DATABASE_POOL"),
+	)
 
 	config, err := pgxpool.ParseConfig(connString)
 
@@ -48,13 +57,18 @@ func main() {
 	router.GET("/pessoas", indexPessoas(pool))
 	router.GET("/contagem-pessoas", contagemPessoas(pool))
 
-	port, ok := os.LookupEnv("PORT")
+	router.Run("localhost:" + getEnv("PORT"))
+}
+
+func getEnv(envName string) string {
+	env, ok := os.LookupEnv(envName)
 
 	if !ok {
-		port = "9999"
+		message := fmt.Sprintf("env not declared $%s", envName)
+		panic(message)
 	}
 
-	router.Run("localhost:" + port)
+	return env
 }
 
 func postPessoas(pool *pgxpool.Pool) gin.HandlerFunc {
