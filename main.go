@@ -33,11 +33,11 @@ func main() {
 
 	pool, err := pgxpool.NewWithConfig(context.Background(), config)
 
-	defer pool.Close()
-
 	if err != nil {
 		panic(err)
 	}
+
+	defer pool.Close()
 
 	// router := gin.Default()
 	router := gin.New()
