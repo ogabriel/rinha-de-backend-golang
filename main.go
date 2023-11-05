@@ -97,7 +97,7 @@ func postPessoas(pool *pgxpool.Pool) gin.HandlerFunc {
 }
 
 func missingFields(person *Pessoa) bool {
-	if len(person.Apelido) == 0 || len(person.Nome) == 0 || len(person.Nascimento) == 0 {
+	if person.Apelido == "" || person.Nome == "" || person.Nascimento == "" {
 		return true
 	}
 
