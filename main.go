@@ -92,7 +92,7 @@ func postPessoas(pool *pgxpool.Pool) gin.HandlerFunc {
 			person.Nome,
 			person.Nascimento,
 			person.Stack,
-			buildBusca(person),
+			buildBusca(person.Apelido, person.Nome, &person.Stack),
 		)
 
 		if err != nil {
@@ -115,16 +115,19 @@ func invalidStack(stack []string) bool {
 	return false
 }
 
-func buildBusca(person Pessoa) string {
+func buildBusca(apelido string, nome string, stack *[]string) string {
+	size := 32 + 100 + (len(*stack) * 32)
+
 	var busca strings.Builder
+	busca.Grow(size)
 
-	busca.WriteString(strings.Map(unicode.ToLower, person.Apelido))
+	busca.WriteString(strings.Map(unicode.ToLower, apelido))
 	busca.WriteString(" ")
-	busca.WriteString(strings.Map(unicode.ToLower, person.Nome))
+	busca.WriteString(strings.Map(unicode.ToLower, nome))
 	busca.WriteString(" ")
 
-	if person.Stack != nil {
-		for _, v := range person.Stack {
+	if stack != nil {
+		for _, v := range *stack {
 			busca.WriteString(strings.Map(unicode.ToLower, v))
 			busca.WriteString(" ")
 		}
