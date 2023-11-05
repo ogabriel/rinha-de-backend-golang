@@ -10,7 +10,6 @@ import (
 	"unicode"
 
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -77,17 +76,9 @@ func postPessoas(pool *pgxpool.Pool) gin.HandlerFunc {
 			return
 		}
 
-		uuid, err := uuid.NewRandom()
-
-		if err != nil {
-			ctx.Status(http.StatusUnprocessableEntity)
-			return
-		}
-
-		_, err = pool.Exec(
+		row := pool.QueryRow(
 			ctx,
-			"INSERT INTO pessoas (id, apelido, nome, nascimento, stack, busca) VALUES ($1, $2, $3, $4, $5, $6)",
-			uuid,
+			"INSERT INTO pessoas (apelido, nome, nascimento, stack, busca) VALUES ($1, $2, $3, $4, $5) RETURNING id",
 			person.Apelido,
 			person.Nome,
 			person.Nascimento,
@@ -95,12 +86,12 @@ func postPessoas(pool *pgxpool.Pool) gin.HandlerFunc {
 			buildBusca(person.Apelido, person.Nome, &person.Stack),
 		)
 
-		if err != nil {
+		if err := row.Scan(&person.ID); err != nil {
 			ctx.Status(http.StatusUnprocessableEntity)
 			return
 		}
 
-		ctx.Header("Location", "/pessoas/"+uuid.String())
+		ctx.Header("Location", "/pessoas/"+person.ID)
 		ctx.Status(http.StatusCreated)
 	}
 }
