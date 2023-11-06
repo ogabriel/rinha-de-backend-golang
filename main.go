@@ -198,6 +198,11 @@ func indexPessoas(pool *pgxpool.Pool) gin.HandlerFunc {
 
 		people, err := pgx.CollectRows(rows, pgx.RowToStructByPos[Pessoa])
 
+		if err != nil {
+			ctx.Status(http.StatusUnprocessableEntity)
+			return
+		}
+
 		ctx.JSON(http.StatusOK, people)
 	}
 }
