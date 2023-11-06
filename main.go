@@ -145,16 +145,18 @@ func buildBusca(person *Pessoa) string {
 	var busca strings.Builder
 	busca.Grow(size)
 
+	const sep string = " "
+
 	busca.WriteString(strings.Map(unicode.ToLower, person.Apelido))
-	busca.WriteString(" ")
+	busca.WriteString(sep)
 	busca.WriteString(strings.Map(unicode.ToLower, person.Nome))
-	busca.WriteString(" ")
+	busca.WriteString(sep)
 
 	if person.Stack != nil {
 		busca.WriteString(person.Stack[0])
 
 		for _, v := range person.Stack[1:] {
-			busca.WriteString(" ")
+			busca.WriteString(sep)
 			busca.WriteString(strings.Map(unicode.ToLower, v))
 		}
 	}
