@@ -12,7 +12,7 @@ services:
       DATABASE_PASS: postgres
       DATABASE_PORT: 5432
       DATABASE_NAME: rinha
-      DATABASE_POOL: 15
+      DATABASE_POOL: 10
       PORT: 9997
       GIN_MODE: release
       GOGC: off
@@ -54,7 +54,6 @@ services:
           memory: '0.5GB'
 
   postgres:
-    container_name: postgres
     image: postgres:15-alpine
     restart: always
     environment:
