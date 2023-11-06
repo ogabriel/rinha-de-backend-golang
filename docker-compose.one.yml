@@ -1,0 +1,51 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: release
+    environment:
+      DATABASE_HOST: localhost
+      DATABASE_USER: postgres
+      DATABASE_PASS: postgres
+      DATABASE_PORT: 5432
+      DATABASE_NAME: rinha
+      DATABASE_POOL: 20
+      PORT: 9999
+      GIN_MODE: release
+      GOGC: off
+      GOMEMLIMIT: 1GiB
+      GOMAXPROCS: 2
+    network_mode: host
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: ["migrate_and_release"]
+    deploy:
+      resources:
+        limits:
+          cpus: '0.7'
+          memory: '1.5GB'
+
+  postgres:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    network_mode: host
+    volumes:
+    - ./postgresql.conf:/etc/postgresql.conf
+    command: ["postgres", "-c", "config_file=/etc/postgresql.conf"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 2s
+      timeout: 5s
+      retries: 10
+    deploy:
+      resources:
+        limits:
+          cpus: '0.8'
+          memory: '1.5GB'

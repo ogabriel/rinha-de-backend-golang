@@ -34,6 +34,14 @@ database-migration-up:
 database-migration-create:
 	migrate create -ext sql -dir migrations -seq $(name)
 
+docker-compose-one:
+	make docker-compose-down
+	docker compose -f docker-compose.one.yml -p $(PROJECT)-one up
+
+docker-compose-one-build:
+	make docker-compose-down
+	docker compose -f docker-compose.one.yml -p $(PROJECT)-one up --build
+
 docker-compose-two:
 	make docker-compose-down
 	docker compose -f docker-compose.two.yml -p $(PROJECT)-two up
