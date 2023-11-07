@@ -45,13 +45,13 @@ Generating reports...
 ---- Global Information --------------------------------------------------------
 > request count                                     114991 (OK=114991 KO=0     )
 > min response time                                      0 (OK=0      KO=-     )
-> max response time                                     32 (OK=32     KO=-     )
-> mean response time                                     1 (OK=1      KO=-     )
+> max response time                                     10 (OK=10     KO=-     )
+> mean response time                                     0 (OK=0      KO=-     )
 > std deviation                                          1 (OK=1      KO=-     )
-> response time 50th percentile                          1 (OK=1      KO=-     )
-> response time 75th percentile                          2 (OK=2      KO=-     )
-> response time 95th percentile                          2 (OK=2      KO=-     )
-> response time 99th percentile                          3 (OK=3      KO=-     )
+> response time 50th percentile                          0 (OK=0      KO=-     )
+> response time 75th percentile                          1 (OK=1      KO=-     )
+> response time 95th percentile                          1 (OK=1      KO=-     )
+> response time 99th percentile                          1 (OK=1      KO=-     )
 > mean requests/sec                                558.209 (OK=558.209 KO=-     )
 ---- Response Time Distribution ------------------------------------------------
 > t < 800 ms                                        114991 (100%)
@@ -59,7 +59,6 @@ Generating reports...
 > t >= 1200 ms                                           0 (  0%)
 > failed                                                 0 (  0%)
 ================================================================================
-
 A contagem de pessoas é: 46576
 ```
 
@@ -82,13 +81,13 @@ Generating reports...
 ---- Global Information --------------------------------------------------------
 > request count                                     114991 (OK=114991 KO=0     )
 > min response time                                      0 (OK=0      KO=-     )
-> max response time                                     21 (OK=21     KO=-     )
-> mean response time                                     1 (OK=1      KO=-     )
-> std deviation                                          1 (OK=1      KO=-     )
-> response time 50th percentile                          1 (OK=1      KO=-     )
-> response time 75th percentile                          2 (OK=2      KO=-     )
-> response time 95th percentile                          2 (OK=2      KO=-     )
-> response time 99th percentile                          3 (OK=3      KO=-     )
+> max response time                                     11 (OK=11     KO=-     )
+> mean response time                                     0 (OK=0      KO=-     )
+> std deviation                                          0 (OK=0      KO=-     )
+> response time 50th percentile                          0 (OK=0      KO=-     )
+> response time 75th percentile                          1 (OK=1      KO=-     )
+> response time 95th percentile                          1 (OK=1      KO=-     )
+> response time 99th percentile                          1 (OK=1      KO=-     )
 > mean requests/sec                                558.209 (OK=558.209 KO=-     )
 ---- Response Time Distribution ------------------------------------------------
 > t < 800 ms                                        114991 (100%)
@@ -96,7 +95,6 @@ Generating reports...
 > t >= 1200 ms                                           0 (  0%)
 > failed                                                 0 (  0%)
 ================================================================================
-
 A contagem de pessoas é: 46576
 ```
 
