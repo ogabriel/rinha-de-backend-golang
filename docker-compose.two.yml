@@ -20,8 +20,7 @@ services:
       GOMAXPROCS: 1
     network_mode: host
     depends_on:
-      postgres:
-        condition: service_healthy
+    - postgres
     command: ["migrate_and_release"]
     deploy:
       resources:
@@ -59,17 +58,10 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-    ports:
-    - 5432:5432
     network_mode: host
     volumes:
     - ./postgresql.conf:/etc/postgresql.conf
     command: ["postgres", "-c", "config_file=/etc/postgresql.conf"]
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s
-      timeout: 1s
-      retries: 10
     deploy:
       resources:
         limits:
