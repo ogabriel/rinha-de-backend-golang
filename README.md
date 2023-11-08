@@ -16,6 +16,10 @@ Utilizando os aprendizados anteriores com a [implementação em elixir](https://
     a. GOGC
     b. GOMEMLIMIT
     c. GOMAXPROCS
+2. passar uuid pro banco
+3. tirar uuid pra apliação - _tira casaco, bota casado_
+4. otimiza settings do postgresql
+    - isso dadqui fez uma diferença fenomenal, principalmente desabilitar autovacuum e fsync
 
 ## Conclusões
 
