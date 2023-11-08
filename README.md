@@ -1,6 +1,8 @@
 # Rinha de backend
 
-Implementação em elixir da [rinha de backend 2023 Q3](https://github.com/zanfranceschi/rinha-de-backend-2023-q3)
+Implementação em elixir da [rinha de backend 2023 Q3](https://github.com/zanfranceschi/rinha-de-backend-2023-q3).
+
+Comecei a trabalhar no projeto depois de sairem todos os resultados e os vídeos do Akita e MrPowerGamerBR, então a maioria dos "truques" já eram amplamente conhecidos. O que fiz foi tentar explorar novos "truques" além dos que eram conhecidos, além de usar esse projeto como um tempo de estudos e exploração de novas tecnológias.
 
 ## Objetivo
 
@@ -81,9 +83,9 @@ Generating reports...
 ---- Global Information --------------------------------------------------------
 > request count                                     114991 (OK=114991 KO=0     )
 > min response time                                      0 (OK=0      KO=-     )
-> max response time                                     11 (OK=11     KO=-     )
+> max response time                                     10 (OK=10     KO=-     )
 > mean response time                                     0 (OK=0      KO=-     )
-> std deviation                                          0 (OK=0      KO=-     )
+> std deviation                                          1 (OK=1      KO=-     )
 > response time 50th percentile                          0 (OK=0      KO=-     )
 > response time 75th percentile                          1 (OK=1      KO=-     )
 > response time 95th percentile                          1 (OK=1      KO=-     )
@@ -94,6 +96,10 @@ Generating reports...
 > 800 ms <= t < 1200 ms                                  0 (  0%)
 > t >= 1200 ms                                           0 (  0%)
 > failed                                                 0 (  0%)
+================================================================================
+
+Reports generated in 0s.
+Please open the following file: file:///home/gabriel/workspace/rinha-de-backend-2023-q3/resultados/local/rinhabackendsimulation-20231108005630714/index.html
 ================================================================================
 A contagem de pessoas é: 46576
 ```
