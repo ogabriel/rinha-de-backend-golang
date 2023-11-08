@@ -101,10 +101,6 @@ Generating reports...
 > t >= 1200 ms                                           0 (  0%)
 > failed                                                 0 (  0%)
 ================================================================================
-
-Reports generated in 0s.
-Please open the following file: file:///home/gabriel/workspace/rinha-de-backend-2023-q3/resultados/local/rinhabackendsimulation-20231108005630714/index.html
-================================================================================
 A contagem de pessoas é: 46576
 ```
 
