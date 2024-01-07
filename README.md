@@ -4,6 +4,12 @@ Implementação em elixir da [rinha de backend 2023 Q3](https://github.com/zanfr
 
 Comecei a trabalhar no projeto depois de sairem todos os resultados e os vídeos do Akita e MrPowerGamerBR, então a maioria dos "truques" já eram amplamente conhecidos. O que fiz foi tentar explorar novos "truques" além dos que eram conhecidos, além de usar esse projeto como um tempo de estudos e exploração de novas tecnológias.
 
+## Outras implementações
+
+- [Elixir](https://github.com/ogabriel/rinha-de-backend-elixir)
+- [Ruby](https://github.com/ogabriel/rinha-de-backend-ruby)
+- [PHP](https://github.com/ogabriel/rinha-de-backend-php)
+
 ## Objetivo
 
 Implementar a rinha em ruby on rails, e sem fazer nenuma adição de cache e batch insert.
@@ -120,6 +126,34 @@ A contagem de pessoas é: 46576
 ##### Resultado do gatling console
 
 ```
+Simulation RinhaBackendSimulation completed in 205 seconds
+Parsing log file(s)...
+Parsing log file(s) done
+Generating reports...
+
+================================================================================
+---- Global Information --------------------------------------------------------
+> request count                                     114991 (OK=114991 KO=0     )
+> min response time                                      0 (OK=0      KO=-     )
+> max response time                                     41 (OK=41     KO=-     )
+> mean response time                                     1 (OK=1      KO=-     )
+> std deviation                                          1 (OK=1      KO=-     )
+> response time 50th percentile                          1 (OK=1      KO=-     )
+> response time 75th percentile                          1 (OK=1      KO=-     )
+> response time 95th percentile                          2 (OK=2      KO=-     )
+> response time 99th percentile                          2 (OK=2      KO=-     )
+> mean requests/sec                                560.932 (OK=560.932 KO=-     )
+---- Response Time Distribution ------------------------------------------------
+> t < 800 ms                                        114991 (100%)
+> 800 ms <= t < 1200 ms                                  0 (  0%)
+> t >= 1200 ms                                           0 (  0%)
+> failed                                                 0 (  0%)
+================================================================================
+
+Reports generated in 0s.
+Please open the following file: file:///home/gabriel/workspace/rinha-de-backend-2023-q3/resultados/local/rinhabackendsimulation-20231108115309174/index.html
+================================================================================
+A contagem de pessoas é: 46576
 ```
 
 ##### Recusos do docker durante a parte mais pesada do teste
